@@ -1,12 +1,154 @@
 <!DOCTYPE html>
 <html>
     <head>
+    	<meta charset=utf-8>
         <title>My Sample Project</title>
         <!-- data-main attribute tells require.js to load
              scripts/main.js after require.js loads. -->
         <script data-main="lib/main" src="lib/libs/require.js"></script>
     </head>
     <body>
-        <h1>MIDI</h1>
-    </body>
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section id="main_content" class="inner">
+    <h3>Tester</h3>
+    <p><strong>Before you press the button:</strong> install the <a href="http://jazz-soft.net/">Jazz-Soft.net's Jazz-Plugin</a> to enable MIDI support on Windows and OSX.</p>
+    <p>On MacOS, you will also need a real synthesizer or something like <a href="http://www.manyetas.com/creed/midikeys.html">MidiKeys</a>. </p>
+    1. <button id="enable">Enable MIDI!</button> ⇰ 
+    2. <button id="playRandomSound" disabled>Random sound</button> ⇰
+    3. <button id="playRandomNote" disabled>Play random notes</button> ⇰
+    4. <button id="replay" disabled>Replay data</button> ⇰
+    5. <button id="clearData" disabled>Clear data</button>
+    <pre id="log">
+	</pre>
+    <div id="MIDIPlugin" style="position:absolute; visibility:hidden"></div>
+  </section>
+    </div>
+
+<!-- FOOTER  -->
+<div id="footer_wrap" class="outer">
+      <footer class="inner">
+
+  </footer>
+    </div>    
+<script src="WebMIDIAPI.js"></script> 
+<script>
+(function(exports){
+	var midi = 
+		input=
+	    output= null,
+	    log=document.getElementById("log"),
+	    record= [];
+
+	if(!(window.console)){
+		window.console = {log: function(msg){ alert(msg);}}
+	}
+
+	document.querySelector("#enable").onclick = function enable() {
+		log.innerHTML = "Starting up MIDI...\n";
+		navigator.requestMIDIAccess( success, failure );
+	}; 
+
+	document.querySelector("#playRandomSound").onclick = function playRandomSound(){
+		var rand = Math.floor(Math.random() * 127);
+		//Chan 1 Program Change (random sound)
+		play([0xC0,rand,0]);
+		//Chan 1 Note on, note, velocity
+	    play([0x90,60,0x7f]);
+	    //Chan 1 Note off
+	   	play([0x80,60,0], performance.now() + 500);
+	}; 
+
+	document.querySelector("#playRandomNote").onclick = function playRandomNote(){
+		var rand = Math.floor(Math.random() * 128);
+		play([0x90, rand, 0x5f]);
+		play([0x90, rand, 0x0], performance.now() + 500);
+	};
+
+	document.querySelector("#replay").onclick = function replay(){
+		if(record.length === 0){
+			return;
+		}
+		var start = window.performance.now() - record[0].stamp; 
+		record.forEach(function(packet){
+			output.send(packet.data, packet.stamp + start);
+		})
+	};
+	
+	document.querySelector("#clearData").onclick = function clearData(){
+		record = [];
+		output.send([0x80, 0, 0]);
+	}
+
+	function play(array,timestamp){
+		var html = "Sending:"
+			packet = null; 
+		if(!(output)){
+			return;
+		}
+		packet = {data: array, stamp: timestamp || performance.now()}; 
+		record.push(packet);
+		output.send(array, timestamp)
+		for(var i = 0, l= array.length; i < l; i++){
+			html += " 0x" + array[i].toString(16);
+		}
+	
+		//log.innerHTML += (html + " timestamp:" + packet.stamp + "\n"); 
+		//log.scrollTop = log.scrollHeight;
+	}
+
+	function handleMIDIMessage( ev ) {
+		// testing - just reflect.
+		log.innerHTML += "Message: " + ev.data.length + " bytes, timestamp: " + ev.receivedTime;
+		if (ev.data.length == 3){
+			log.innerHTML += " 0x" + ev.data[0].toString(16) + " 0x" + ev.data[1].toString(16) + " 0x" + ev.data[2].toString(16);
+		}
+		log.innerHTML += "\n";
+		if (output){
+			play( ev.data );
+		}
+		
+	}
+
+	function success( midiAccess ) {
+		var outputs = midiAccess.getOutputs();
+		var inputs = midiAccess.getInputs();
+		exports.midi = midi = midiAccess;
+		log.innerHTML += "MIDI ready!\n";
+		log.innerHTML += inputs.length+" inputs.\n";
+		if (inputs.length>0) {
+			
+			for (var i=0, l = inputs.length; i<l ;i++){
+				log.innerHTML += i + ": " + inputs[i].name + "\n";
+			}
+			input = inputs[0];
+			input.addEventListener("message", handleMIDIMessage);
+			log.innerHTML += "Listening to: " + input.name + " \n";
+		} 
+		
+		log.innerHTML += outputs.length+" outputs:\n";
+		for (var i=0;i<outputs.length;i++){
+			log.innerHTML += i + ": " + outputs[i].name + "\n";
+		}
+		if (outputs.length) {
+			output = outputs[0];
+		}
+		//reset
+		output.send([0x80, 0, 0]);
+		enableFunctionality();
+	}
+
+	function enableFunctionality(){
+		buttons = document.querySelectorAll("button");
+		for(var button, i = buttons.length -1 ; i >= 0; i--){
+			buttons[i].disabled = false;
+		}
+	}
+
+	function failure( error ) {
+		console.log( error.message );
+	}
+}(window));
+</script>
+</body>
 </html>
