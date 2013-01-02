@@ -1,9 +1,10 @@
-# adlib
+# adlib - DON'T USE THIS
 
 Prollyfill of Web MIDI API
 
 ## Getting Started
 ### On the server
+DON'T USE THIS
 Install the module with: `npm install adlib`
 
 ```javascript
@@ -12,6 +13,7 @@ adlib.awesome(); // "awesome"
 ```
 
 ### In the browser
+DON'T USE THIS
 Download the [production version][min] or the [development version][max].
 
 [min]: https://raw.github.com/marcoscaceres/adlib/master/dist/adlib.min.js

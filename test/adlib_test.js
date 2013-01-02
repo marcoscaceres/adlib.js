@@ -1,5 +1,14 @@
 /*global require:true */
-var adlib = require('../lib/adlib.js');
+var jsdom = require("jsdom"),
+    window;
+jsdom.env(
+  "http://localhost:8888",
+  [],
+  function (errors, win) {
+      window = win;
+  }
+);
+//var adlib = require('../lib/modules/MIDI.js');
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -20,7 +29,7 @@ var adlib = require('../lib/adlib.js');
     test.doesNotThrow(block, [error], [message])
     test.ifError(value)
 */
-
+/*
 exports['awesome'] = {
   setUp: function(done) {
     // setup here
@@ -29,7 +38,8 @@ exports['awesome'] = {
   'no args': function(test) {
     test.expect(1);
     // tests here
-    test.equal(adlib.awesome(), 'awesome', 'should be awesome.');
+    //test.equal(adlib.awesome(), 'awesome', 'should be awesome.');
     test.done();
   }
 };
+*/

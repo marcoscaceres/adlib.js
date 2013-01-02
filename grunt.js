@@ -50,10 +50,20 @@ module.exports = function(grunt) {
         module: false
       }
     },
-    uglify: {}
+    uglify: {},
+    requirejs: {
+        compile: {
+          options: {
+            baseUrl: "lib/modules/",
+            mainConfigFile: "lib/main.js",
+            out: "dist/test.min.js"
+        }
+      }
+    }
   });
 
   // Default task.
+  grunt.loadNpmTasks('grunt-requirejs');  
   grunt.registerTask('default', 'lint test concat min');
-
+  grunt.registerTask('build', 'requirejs');
 };
