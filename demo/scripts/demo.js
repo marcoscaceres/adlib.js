@@ -5,10 +5,8 @@
         log = document.getElementById("log"),
         record = [];
         
-    window.require.config({
-      baseUrl: '/lib/modules'
-    });
-    window.require(['performance.now', 'requestMIDIAccess']);
+
+    window.require(['/lib/adlib.js']);
 
     document.querySelector("#enable").onclick = function enable() {
         log.innerHTML = "Starting up MIDI...\n";

@@ -64,6 +64,6 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.loadNpmTasks('grunt-requirejs');  
-  grunt.registerTask('default', 'lint test concat min');
+  grunt.registerTask('default', 'lint qunit concat min');
   grunt.registerTask('build', 'requirejs');
 };
