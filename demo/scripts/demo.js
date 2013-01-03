@@ -6,7 +6,7 @@
         record = [];
         
 
-    window.require(['/lib/adlib.js']);
+    window.require(['/dist/adlib.min.js']);
 
     document.querySelector("#enable").onclick = function enable() {
         log.innerHTML = "Starting up MIDI...\n";

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>adlib.js Test Suite</title>
+
+<h1>Adlib.js - test suite</h1>
+<div id="log"></div>
+<script data-main="/lib/adlib" src="/libs/require.js"></script>
+<script src=http://w3c-test.org/resources/testharness.js></script>
+<script src=http://w3c-test.org/resources/testharnessreport.js></script>
+<script src=http://w3c-test.org/resources/WebIDLParser.js></script>
+<script src=http://w3c-test.org/resources/idlharness.js></script>
+<script src="adlib_tests.js"></script>
+<script>
+window.onload = function(){
+  var midiport = "interface MIDIPort {readonly attribute DOMString id; readonly attribute DOMString?   manufacturer; readonly attribute DOMString?   name; readonly attribute MIDIPortType type; readonly attribute DOMString?   version;};",
+    midiporttype = 'enum MIDIPortType {"input","output"};', 
+   idl_array = new IdlArray();
+
+  idl_array.add_untested_idls(midiporttype);  
+  idl_array.add_untested_idls(midiport);
+  //idl_array.add_objects({MIDIPort: ["window.MIDIPort"]})
+  idl_array.test();
+}
+
+console.log("test")
+
+</script>

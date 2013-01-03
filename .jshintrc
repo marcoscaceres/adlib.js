@@ -1,0 +1,18 @@
+{
+	"es5": true,
+	"proto": true,
+	"devel": true,
+	"forin": true,
+	"noarg": true,
+	"noempty": true,
+	"eqeqeq": true,
+	"bitwise": false,
+	"strict": true,
+	"undef": true,
+	"unused": true,
+	"curly": true,
+	"browser": true,
+	"indent": 4,
+	"maxerr": 50
+	"predef":["exports","module","window","require","define"]
+}
