@@ -3,17 +3,8 @@
 Prollyfill of Web MIDI API
 
 ## Getting Started
-### On the server
-DON'T USE THIS
-Install the module with: `npm install adlib`
-
-```javascript
-var adlib = require('adlib');
-adlib.awesome(); // "awesome"
-```
-
 ### In the browser
-DON'T USE THIS
+
 Download the [production version][min] or the [development version][max].
 
 [min]: https://raw.github.com/marcoscaceres/adlib/master/dist/adlib.min.js
@@ -22,29 +13,37 @@ Download the [production version][min] or the [development version][max].
 In your web page:
 
 ```html
+<script src="libs/require.js"></script>
 <script src="dist/adlib.min.js"></script>
-<script>
-awesome(); // "awesome"
-</script>
-```
-
-In your code, you can attach adlib's methods to any object.
-
-```html
-<script>
-this.exports = Bocoup.utils;
-</script>
-<script src="dist/adlib.min.js"></script>
-<script>
-Bocoup.utils.awesome(); // "awesome"
-</script>
 ```
 
 ## Documentation
-_(Coming soon)_
+[W3C Web MIDI API](http://www.w3.org/TR/webmidi/)
 
 ## Examples
-_(Coming soon)_
+Play a note on an output. 
+
+```html
+<script>
+function success(access){
+	//we have access, lets play
+	var output = access.getOutputs()[0];
+	if(output){
+		output.send([0x91, 0x40, 0x5f]);
+		output.send([0x91, 0x40, 0x0], performance.now() + 200);
+		return;
+	}
+	//otherwise, no outputs :( 
+	fail(new Error("no MIDI outputs"));
+}
+
+function fail(e){
+	console.log("something went wrong: " + e)
+}
+window.navigator.requestMIDIAccess(success, fail);
+</script>
+```
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](http://gruntjs.com/).
@@ -55,5 +54,5 @@ _Also, please don't edit files in the "dist" subdirectory as they are generated 
 _(Nothing yet)_
 
 ## License
-Copyright (c) 2012 Marcos Caceres  
+Copyright (c) 2013 Marcos Caceres  
 Licensed under the MIT license.
