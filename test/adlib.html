@@ -4,24 +4,45 @@
 
 <h1>Adlib.js - test suite</h1>
 <div id="log"></div>
-<script data-main="/lib/adlib" src="/libs/require.js"></script>
+<script data-main="/lib/adlib.js" src="/libs/require.js"></script>
 <script src=http://w3c-test.org/resources/testharness.js></script>
 <script src=http://w3c-test.org/resources/testharnessreport.js></script>
 <script src=http://w3c-test.org/resources/WebIDLParser.js></script>
 <script src=http://w3c-test.org/resources/idlharness.js></script>
 <script src="adlib_tests.js"></script>
+
+
+<pre id='untested_idl' style='display:none'>
+interface Window {};
+interface Performance {};
+partial interface Window {
+  [Replaceable] readonly attribute Performance performance;
+};
+</pre>
+
+<pre id='idl'>
+typedef double DOMHighResTimeStamp;
+
+partial interface Performance {
+  DOMHighResTimeStamp now();
+};
+</pre>
+
 <script>
-window.onload = function(){
-  var midiport = "interface MIDIPort {readonly attribute DOMString id; readonly attribute DOMString?   manufacturer; readonly attribute DOMString?   name; readonly attribute MIDIPortType type; readonly attribute DOMString?   version;};",
-    midiporttype = 'enum MIDIPortType {"input","output"};', 
-   idl_array = new IdlArray();
+(function() {
+  var idl_array = new IdlArray();
 
-  idl_array.add_untested_idls(midiporttype);  
-  idl_array.add_untested_idls(midiport);
-  //idl_array.add_objects({MIDIPort: ["window.MIDIPort"]})
+  idl_array.add_untested_idls(document.getElementById("untested_idl").textContent);
+  idl_array.add_idls(document.getElementById("idl").textContent);
+
+  idl_array.add_objects({Performance: ["window.performance"]});
+
   idl_array.test();
-}
+})();
 
-console.log("test")
 
 </script>
+
+<div id="log"></div>
+
+
