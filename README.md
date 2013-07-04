@@ -1,4 +1,4 @@
-# adlib - DON'T USE THIS
+# adlib.js
 
 Prollyfill of Web MIDI API
 
