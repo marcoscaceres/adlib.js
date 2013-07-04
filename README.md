@@ -2,7 +2,13 @@
 
 Prollyfill of Web MIDI API
 
+## Warning
+
+**This is an unsupported component with an indefinite lifetime. This should be used for evaluation purposes 
+only and should not be used for production level applications.**
+
 ## Getting Started
+
 ### In the browser
 
 Download the [production version][min] or the [development version][max].
