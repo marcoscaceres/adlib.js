@@ -1,6 +1,7 @@
 # adlib.js
 
-Prollyfill of Web MIDI API
+Prototype reference implementaiton of [W3C Web MIDI API](http://webaudio.github.io/web-midi-api/)
+. 
 
 ## Warning
 
@@ -24,7 +25,7 @@ In your web page:
 ```
 
 ## Documentation
-[W3C Web MIDI API](http://www.w3.org/TR/webmidi/)
+[W3C Web MIDI API](http://webaudio.github.io/web-midi-api/)
 
 ## Examples
 Play a note on an output. 
